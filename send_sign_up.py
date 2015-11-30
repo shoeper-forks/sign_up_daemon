@@ -14,6 +14,7 @@ def send_sign_up():
         # Get BS_Code from the site
         bs_code_pos = r.content.find("BS_Code")
         bs_code = r.content[bs_code_pos+16:bs_code_pos+48] 
+        print bs_code
         
         # click on the button "Buchen"
         data = {
@@ -30,6 +31,7 @@ def send_sign_up():
         # get the fid checksum
         fid_pos = r.content.find("fid")
         fid = r.content[fid_pos+12:fid_pos+52]
+        print fid
 
         # choose a date
         data = {
@@ -38,7 +40,7 @@ def send_sign_up():
         }
 
         header = {
-            "Referer":"https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi"
+            "Referer":"https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi",
         }
 
         r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
@@ -61,13 +63,12 @@ def send_sign_up():
         r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
         
         # binding reserve
-
         data["Phase"] = "final"
-        data["preis_anz"] = "0,00 EUR"
-        data["pw_newpw_"+fid] = ""
-        r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
+        data["preis_anz"] ="0,00 EUR"
+        r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header, allow_redirects = True)
 
-        if(r.content.find("This course is unfortunately full!") == -1):
+        print r.status_code
+        if(r.status_code == 302):
             print sys.argv[4] + " " +  sys.argv[5] + " is signed up sucessfully!"
             return False
         else:
