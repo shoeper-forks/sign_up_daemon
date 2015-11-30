@@ -12,12 +12,15 @@ class Person:
         self.street = street
         self.matnr = matnr
         self.sex = sex
-        self.events = [{}]
+        self.events = []
+
+    def __str__(self):
+        return self.firstname + " " + self.lastname
 
     # event is a dict with course, id, date and time
     def add_event(self, course_name, course_id, date, time):
         event = {"course_name": course_name, "course_id": course_id, "date": date, "time": time}
-        self.events.push_back(event)
+        self.events.append(event)
 
     def send_sign_up(self, event):
         with requests.Session() as s:
@@ -59,7 +62,7 @@ class Person:
 
             # fill the textboxes
             data = {
-                "Termin":event["data"],
+                "Termin":event["date"],
                 "email":self.email,
                 "fid":str(fid),
                 "matnr":self.matnr,
@@ -77,7 +80,8 @@ class Person:
             print r.content
 
     def do_it(self):
-        self.send_sign_up(self, self.events[0])
+        self.send_sign_up(self.events[0])
+
 
 def create_person(file):
     with open(file) as data_file:
@@ -85,13 +89,16 @@ def create_person(file):
 
     person = Person(data["firstname"], data["lastname"], data["email"], data["city"], data["street"], data["matnr"], data["sex"])
     for event in data["events"]:
-        person.add_event(event["course"], event["id"], event["date"], event["time"]
+        person.add_event(event["course"], event["id"], event["date"], event["time"])
+    
+    return person
 
 
 if(__name__=="__main__"):
     persons = []
     with open("config.ini") as ini_file:
         for file in ini_file.readlines():
-            persons.push_back(create_person(file)
+            persons.append(create_person(file[:-1]))
 
+    print persons[0]
     persons[0].do_it()
