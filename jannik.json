@@ -1,0 +1,16 @@
+{
+	"firstname": "Jannik",
+	"lastname": "Becher",
+	"city": "52070 Aachen",
+	"street": "Thomashofstr. 31",
+	"matrnr": "334815",
+	"sex": "M",
+	"events": [
+		{
+			"course": "Handball",
+			"id": "99582",
+			"date": "2015-12-02",
+			"time": "20:30"
+		}
+	]
+}
