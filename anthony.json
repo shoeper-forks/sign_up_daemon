@@ -1,16 +1,16 @@
 {
 	"firstname": "Anthony",
 	"lastname": "Zimmermann",
-	"email": "Jannik-B-19@gmx.de",
+	"email": "anthony.zimmermann@rwth-aachen.de",
 	"city": "52070 Aachen",
 	"street": "Thomashofstr. 31",
-	"matnr": "334815",
+	"matnr": "332685",
 	"sex": "M",
 	"events": [
 		{
 			"course": "Handball",
-			"id": "99582",
-			"date": "2015-12-02",
+			"id": "99588",
+			"date": "2016-01-20",
 			"time": "20:30"
 		}
 	]
