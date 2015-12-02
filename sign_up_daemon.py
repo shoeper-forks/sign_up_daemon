@@ -22,65 +22,14 @@ class Person:
         event = {"course_name": course_name, "course_id": course_id, "date": date, "time": time}
         self.events.append(event)
 
-    def send_sign_up(self, event):
-        with requests.Session() as s:
-            r = s.get("http://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_"+event["course_name"]+".html")
-
-            # Get BS_Code from the site
-            bs_code_pos = r.content.find("BS_Code")
-            bs_code = r.content[bs_code_pos+16:bs_code_pos+48] 
-            print bs_code
-            
-            # click on the button "Buchen"
-            data = {
-                "BS_Code":str(bs_code),
-                "BS_Kursid_"+event["course_id"]:"buchen"
-            }
-
-            header = {
-                "Referer":"http://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_"+event["course_name"]+".html"
-            }
-
-            r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
-
-            # get the fid checksum
-            fid_pos = r.content.find("fid")
-            fid = r.content[fid_pos+12:fid_pos+52]
-            print fid
-
-            # choose a date
-            data = {
-                "BS_TERMIN_"+event["date"]:"buchen",
-                "fid":str(fid)
-            }
-
-            header = {
-                "Referer":"https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi"
-            }
-
-            r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
-
-            # fill the textboxes
-            data = {
-                "Termin":event["date"],
-                "email":self.email,
-                "fid":str(fid),
-                "matnr":self.matnr,
-                "name":self.lastname,
-                "ort":self.city,
-                "sex":self.sex,
-                "statusorig":"S-RWTH",
-                "strasse":self.street,
-                "tnbed":"1",
-                "vorname":self.firstname
-            }
-
-            r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
-
-            print r.content
-
-    def do_it(self):
-        self.send_sign_up(self.events[0])
+    def make_cron(self):
+        with open("/etc/crontab", 'a') as file:
+            for event in self.events:
+                hour = event["time"].split(':')[0]
+                minute = event["time"].split(':')[1]
+                day = event["date"].split('-')[2]
+                month = event["date"].split('-')[1]
+                file.write(minute + ' ' + hour + ' ' + day + ' ' + month +  ' * root ' + "./send_sign_up.py " + event["course_name"] + ' ' + event["course_id"] + ' ' + event["date"] + ' ' + self.firstname + ' ' + self.lastname + ' ' + self.matnr + ' ' + self.sex + ' ' + self.email + ' "' + self.city + '" "' + self.street + '"')
 
 
 def create_person(file):
@@ -100,5 +49,6 @@ if(__name__=="__main__"):
         for file in ini_file.readlines():
             persons.append(create_person(file[:-1]))
 
-    print persons[0]
-    persons[0].do_it()
+    for person in persons:
+        print person
+        person.make_cron()
