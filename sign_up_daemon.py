@@ -29,7 +29,7 @@ class Person:
                 minute = event["time"].split(':')[1]
                 day = event["date"].split('-')[2]
                 month = event["date"].split('-')[1]
-                file.write(minute + ' ' + hour + ' ' + day + ' ' + month +  ' * root ' + "./send_sign_up.py " + event["course_name"] + ' ' + event["course_id"] + ' ' + event["date"] + ' ' + self.firstname + ' ' + self.lastname + ' ' + self.matnr + ' ' + self.sex + ' ' + self.email + ' "' + self.city + '" "' + self.street + '"')
+                file.write(minute + ' ' + hour + ' ' + day + ' ' + month +  ' * root ' + "./send_sign_up.py " + event["course_name"] + ' ' + event["course_id"] + ' ' + event["date"] + ' ' + self.firstname + ' ' + self.lastname + ' ' + self.matnr + ' ' + self.sex + ' ' + self.email + ' "' + self.city + '" "' + self.street + '"\n')
 
 
 def create_person(file):

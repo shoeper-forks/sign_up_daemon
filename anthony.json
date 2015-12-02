@@ -1,0 +1,17 @@
+{
+	"firstname": "Anthony",
+	"lastname": "Zimmermann",
+	"email": "Jannik-B-19@gmx.de",
+	"city": "52070 Aachen",
+	"street": "Thomashofstr. 31",
+	"matnr": "334815",
+	"sex": "M",
+	"events": [
+		{
+			"course": "Handball",
+			"id": "99582",
+			"date": "2015-12-02",
+			"time": "20:30"
+		}
+	]
+}
