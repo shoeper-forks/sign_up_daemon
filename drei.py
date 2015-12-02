@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import requests
-import time
 
-fid = "0b62ba3802c99e1b3be821b18c135b11748683d2"
+fid = "9125e44814cf7406e3c532fbaf3520ea51603cb6"
 header = {
     "Referer":"https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi",
     "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -17,6 +16,7 @@ data = {
     "email":"anthony.zimmermann@rwth-aachen.de",
     "fid":fid,
     "matnr":"332685",
+    "mitnr":"",
     "name":"Zimmermann",
     "ort":"52070 Aachen",
     "sex":"M",
@@ -24,10 +24,9 @@ data = {
     "strasse":"Thomashofstr. 31",
     "tnbed":"1",
     "vorname":"Anthony",
-    "Phase":"final",
-    "preis_anz":"0,00 EUR",
-    "pw_newpw_"+fid:""
+    "pw_email":"",
+    "pw_pwd_"+fid:"",
 }
-time.sleep(2)
+
 r = requests.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
 print r.content
