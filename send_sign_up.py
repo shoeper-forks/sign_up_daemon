@@ -3,22 +3,11 @@
 import requests
 import sys
 import time
-import logging
-import httplib
 
 #          0        1           2           3           4          5       6     7     8      9     10
 # argv = [..., course_name, course_id, course_date, firstname, lastname, matnr, sex, email, city, street]
 
 def send_sign_up():
-    for arg in sys.argv:
-        print arg
-    httplib.HTTPConnection.debuglevel = 1
-    logging.basicConfig()
-    logging.getLogger().setLevel(logging.DEBUG)
-    requests_log = logging.getLogger("requsts.packages.urllib3")
-    requests_log.setLevel(logging.DEBUG)
-    requests_log.propagate = True
-
     with requests.Session() as s:
         r = s.get("http://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_"+sys.argv[1]+".html")
 

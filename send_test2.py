@@ -9,7 +9,7 @@ import time
 
 def send_sign_up():
     with requests.Session() as s:
-        fid = "094ffc46a52f14fa84a1996d19a2e2655820c13a"
+        fid = "b60e0586a734383bac87889a5788e1c0cd520a9a"
 
         # choose a date
         data = {
