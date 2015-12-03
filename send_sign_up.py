@@ -25,12 +25,12 @@ def send_sign_up():
         # Get BS_Code from the site
         bs_code_pos = r.content.find("BS_Code")
         bs_code = r.content[bs_code_pos+16:bs_code_pos+48] 
-        print bs_code
+        #print bs_code
         
         # click on the button "Buchen"
         data = {
             "BS_Code":str(bs_code),
-            "BS_Kursid_"+sys.argv[2]:"buchen"
+            "BS_Kursid_"+sys.argv[2]:"buchen",
         }
 
         header = {
@@ -52,22 +52,22 @@ def send_sign_up():
         # choose a date
         data = {
             "BS_TERMIN_"+sys.argv[3]:"buchen",
-            "fid":str(fid)
+            "fid":str(fid),
         }
 
         header = {
-        "Referer":"https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi",
-        "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "User-Agent":"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0 Iceweasel/38.4.0",
-        "Host":"buchung.hsz.rwth-aachen.de",
-        "Accept-Language":"en-GB,en;q=0.5",
-        "DNT":"1",
+            "Referer":"https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi",
+            "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent":"Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:38.0) Gecko/20100101 Firefox/38.0 Iceweasel/38.4.0",
+            "Host":"buchung.hsz.rwth-aachen.de",
+            "Accept-Language":"en-GB,en;q=0.5",
+            "DNT":"1",
         }
         
 
         r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
 
-
+    with requests.Session() as f:
         # fill the textboxes
         data = {
             "Termin":sys.argv[3],
@@ -86,9 +86,9 @@ def send_sign_up():
             "telefon":"",
             "mitnr":"",
         }
-        time.sleep(10)
-        r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
+        r = f.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
         
+        print header
         # binding reserve
         data = {
             "Termin":sys.argv[3],
@@ -106,19 +106,19 @@ def send_sign_up():
             "preis_anz":"0,00 EUR",
             "pw_newpw_"+fid:"",
         }
-    r = requests.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
+        r = f.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
 
-    print r.text
+        print r.text
 
 
-    print r.status_code
-    print r.history
-    if(r.status_code == 302):
-        print sys.argv[4] + " " +  sys.argv[5] + " is signed up sucessfully!"
-        return False
-    else:
-        print sys.argv[4] + " " +  sys.argv[5] + " is not signed up yet."
-        return True
+        print r.status_code
+        print r.history
+        if(r.status_code == requests.codes.found):
+            print sys.argv[4] + " " +  sys.argv[5] + " is signed up sucessfully!"
+            return False
+        else:
+            print sys.argv[4] + " " +  sys.argv[5] + " is not signed up yet."
+            return True
 
 if(__name__=="__main__"):
     while(send_sign_up()):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import requests
 
-fid = "9125e44814cf7406e3c532fbaf3520ea51603cb6"
+fid = "d9d37b680645c21d223f0296d7a06acbce1d0f03"
 header = {
     "Referer":"https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi",
     "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -13,16 +13,16 @@ header = {
 
 data = {
     "Termin":"2016-01-20",
-    "email":"anthony.zimmermann@rwth-aachen.de",
+    "email":"Jannik-B-19@gmx.de",
     "fid":fid,
-    "matnr":"332685",
-    "name":"Zimmermann",
+    "matnr":"334815",
+    "name":"Becher",
     "ort":"52070 Aachen",
     "sex":"M",
     "statusorig":"S-RWTH",
     "strasse":"Thomashofstr. 31",
     "tnbed":"1",
-    "vorname":"Anthony",
+    "vorname":"Jannik",
     "Phase":"final",
     "preis_anz":"0,00 EUR",
     "pw_newpw_"+fid:"",
