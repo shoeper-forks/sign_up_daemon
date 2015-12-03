@@ -29,7 +29,6 @@ def send_sign_up():
         # get the fid checksum
         fid_pos = r.content.find("fid")
         fid = r.content[fid_pos+12:fid_pos+52]
-        print fid
 
         # choose a date
         data = {
@@ -43,7 +42,7 @@ def send_sign_up():
         
         r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
         
-        time.sleep(10)
+        time.sleep(8)
         
         # fill the textboxes
         data = {
@@ -84,12 +83,13 @@ def send_sign_up():
             "pw_newpw_"+fid:""
         }
 
-        r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
+        r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header, allow_redirects = False)
 
-        print r.text
-
-        if(r.status_code == requests.codes.found):
+        if(r.is_redirect):
             print sys.argv[4] + " " +  sys.argv[5] + " is signed up sucessfully!"
+
+            r = s.get(r.headers["Location"], headers = header)
+            print r.text
             return False
         else:
             print sys.argv[4] + " " +  sys.argv[5] + " is not signed up yet."
