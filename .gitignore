@@ -1,3 +1,10 @@
+# ignore venv files
+lib
+lib64
+bin
+pyvenv.cfg
+
+#ignore temp files
 *.swn
 *.swp
 *.html
