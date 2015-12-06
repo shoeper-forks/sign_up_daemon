@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import requests
 import sys
@@ -11,9 +11,10 @@ def send_sign_up():
         r = s.get("http://buchung.hsz.rwth-aachen.de/angebote/aktueller_zeitraum/_"+sys.argv[1]+".html")
 
         # Get BS_Code from the site
-        bs_code_pos = r.content.find("BS_Code")
-        bs_code = r.content[bs_code_pos+16:bs_code_pos+48] 
+        bs_code_pos = r.content.find("BS_Code".encode())
+        bs_code = r.content[bs_code_pos+16:bs_code_pos+48].decode()
         
+        print(str(bs_code))
         # click on the button "Buchen"
         data = {
             "BS_Code":str(bs_code),
@@ -27,9 +28,11 @@ def send_sign_up():
         r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header)
 
         # get the fid checksum
-        fid_pos = r.content.find("fid")
-        fid = r.content[fid_pos+12:fid_pos+52]
+        fid_pos = r.content.find("fid".encode())
+        fid = r.content[fid_pos+12:fid_pos+52].decode()
 
+        print(fid)
+        print(fid.encode())
         # choose a date
         data = {
             "BS_Termin_"+sys.argv[3]:"buchen",
@@ -57,7 +60,7 @@ def send_sign_up():
             "strasse":sys.argv[10],
             "tnbed":"1",
             "vorname":sys.argv[4],
-            "pw_pwd_"+fid:"",
+            "pw_pwd_"+str(fid):"",
             "pw_email":"",
             "telefon":"",
             "mitnr":""
@@ -80,19 +83,20 @@ def send_sign_up():
             "vorname":sys.argv[4],
             "Phase":"final",
             "preis_anz":"0,00 EUR",
-            "pw_newpw_"+fid:""
+            "pw_newpw_"+str(fid):""
         }
 
         r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header, allow_redirects = False)
 
+        print(r.text)
         if(r.is_redirect):
-            print sys.argv[4] + " " +  sys.argv[5] + " is signed up sucessfully!"
+            print(sys.argv[4] + " " +  sys.argv[5] + " is signed up sucessfully!")
 
             r = s.get(r.headers["Location"], headers = header)
-            print r.text
+            print(r.text)
             return False
         else:
-            print sys.argv[4] + " " +  sys.argv[5] + " is not signed up yet."
+            print(sys.argv[4] + " " +  sys.argv[5] + " is not signed up yet.")
             return True
 
 if(__name__=="__main__"):

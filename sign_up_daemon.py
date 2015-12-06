@@ -50,5 +50,5 @@ if(__name__=="__main__"):
             persons.append(create_person(file[:-1]))
 
     for person in persons:
-        print person
+        print(person)
         person.make_cron()
