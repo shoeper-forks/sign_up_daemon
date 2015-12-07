@@ -14,7 +14,6 @@ def send_sign_up():
         bs_code_pos = r.content.find("BS_Code".encode())
         bs_code = r.content[bs_code_pos+16:bs_code_pos+48].decode()
         
-        print(str(bs_code))
         # click on the button "Buchen"
         data = {
             "BS_Code":str(bs_code),
@@ -31,8 +30,6 @@ def send_sign_up():
         fid_pos = r.content.find("fid".encode())
         fid = r.content[fid_pos+12:fid_pos+52].decode()
 
-        print(fid)
-        print(fid.encode())
         # choose a date
         data = {
             "BS_Termin_"+sys.argv[3]:"buchen",
@@ -88,7 +85,6 @@ def send_sign_up():
 
         r = s.post("https://buchung.hsz.rwth-aachen.de/cgi/anmeldung.fcgi", data = data, headers = header, allow_redirects = False)
 
-        print(r.text)
         if(r.is_redirect):
             print(sys.argv[4] + " " +  sys.argv[5] + " is signed up sucessfully!")
 
