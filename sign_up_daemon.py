@@ -29,14 +29,21 @@ class Person:
                 minute = event["time"].split(':')[1]
                 day = event["date"].split('-')[2]
                 month = event["date"].split('-')[1]
-                file.write(minute + ' ' + hour + ' ' + day + ' ' + month +  ' * root ' + "./send_sign_up.py " + event["course_name"] + ' ' + event["course_id"] + ' ' + event["date"] + ' ' + self.firstname + ' ' + self.lastname + ' ' + self.matnr + ' ' + self.sex + ' ' + self.email + ' "' + self.city + '" "' + self.street + '"\n')
+                file.write(minute + ' ' + hour + ' ' + day + ' ' + month +  ' * root ' + 
+                        "./send_sign_up.py " + event["course_name"] + ' ' + event["course_id"] +
+                        ' ' + event["date"] + ' ' + self.firstname + ' ' + self.lastname + ' ' + 
+                        self.matnr + ' ' + self.sex + ' ' + self.email + " \"" + self.city +
+                        "\" \"" + self.street + "\" > " + self.firstname + '_' + self.lastname + 
+                        '_' + event["course_name"] + '_' + event["date"] + '_' + event["time"] + 
+                        ".html\n")
 
 
 def create_person(file):
     with open(file) as data_file:
         data = json.load(data_file)
 
-    person = Person(data["firstname"], data["lastname"], data["email"], data["city"], data["street"], data["matnr"], data["sex"])
+    person = Person(data["firstname"], data["lastname"], data["email"], data["city"], 
+            data["street"], data["matnr"], data["sex"])
     for event in data["events"]:
         person.add_event(event["course"], event["id"], event["date"], event["time"])
     
